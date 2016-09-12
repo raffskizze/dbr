@@ -10,12 +10,42 @@
 </head>
 <body>
 
-<div class="container" style="background-color:grey">
+<div class="container">
   <h1>My First Bootstrap Page</h1>
   <p>This is some text.</p> 
 	<div class="row">
-		<div class="col-sm-9">9 espacios</div>
-		<div class="col-sm-3" style="background-color:yellow"> 3 espacios</div>
+		<div class="col-sm-9">
+			<form>
+				<div class="form-group">
+					<textarea class="form-control" rows="5" id="sqlarea"></textarea>
+				</div>
+				<div class="form-group">
+					<button type="button" class="btn btn-primary btn-block">Ejecutar SQL</button>
+				</div>
+			</form>
+		</div>
+		<div class="col-sm-3">
+			<form> 
+				<div class="form-group">
+					<button type="button" class="btn btn-primary btn-block">Opcion 1</button>
+				</div>
+				<div class="form-group">
+					<button type="button" class="btn btn-primary btn-block">Opcion 2</button>
+				</div>
+				<div class="form-group">
+				<div class="btn-group btn-group-justified">
+					<div class="btn-group">
+					  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					  Tablas <span class="caret"></span></button>
+					  <ul class="dropdown-menu" role="menu">
+						<li><a href="#">Tablet</a></li>
+						<li><a href="#">Smartphone</a></li>
+					  </ul>
+					</div> 
+				</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 <div class="container">
