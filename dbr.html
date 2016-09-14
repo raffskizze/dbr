@@ -30,7 +30,18 @@
 					<button type="button" class="btn btn-primary btn-block">Opcion 1</button>
 				</div>
 				<div class="form-group">
-					<button type="button" class="btn btn-primary btn-block">Opcion 2</button>
+				<div class="btn-group btn-group-justified">
+					<div class="btn-group">
+					  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					  Consultas <span class="caret"></span></button>
+					  <ul class="dropdown-menu" role="menu">
+						<li><a href="#" id="select">SELECT</a></li>
+						<li><a href="#" id="delete">DELETE</a></li>
+						<li><a href="#" id="update">UPDATE</a></li>
+						<li><a href="#" id="innerjoin">INNER JOIN</a></li>
+					  </ul>
+					</div> 
+				</div>
 				</div>
 				<div class="form-group">
 				<div class="btn-group btn-group-justified">
@@ -99,5 +110,24 @@
   </table>
   </div>
 </div>
+<script>
+$(document).ready(function(){
+
+	//clicks en consultas
+    $("#select").click(function(){
+		$("#sqlarea").val("SELECT * FROM tabla WHERE campo = 'XXX';");
+    });
+    $("#delete").click(function(){
+		$("#sqlarea").val("DELETE FROM tabla WHERE campo = 'XXX';");
+    });
+    $("#update").click(function(){
+		$("#sqlarea").val("UPDATE tabla SET campo = '' WHERE campoid = 'XXX';");
+    });
+    $("#innerjoin").click(function(){
+		$("#sqlarea").val("SELECT columna FROM tabla1 INNER JOIN tabla2 ON tabla1.columna=tabla2.columna;");
+    });
+});
+</script>
+
 </body>
 </html>
