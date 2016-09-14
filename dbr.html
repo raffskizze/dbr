@@ -60,6 +60,18 @@
 	</div>
 </div>
 <div class="container">
+<div class="alert alert-success">
+  <a href="#" class="close closealert" aria-label="close">&times;</a>
+  <strong>Success!</strong> Indicates a successful or positive action.
+</div>
+<div class="alert alert-danger">
+  <a href="#" class="close closealert" aria-label="close">&times;</a>
+  <strong>Error!</strong> Indicates an error
+</div>
+<div class="alert alert-info">
+  <a href="#" class="close closealert" aria-label="close">&times;</a>
+  <strong>Info!</strong> Indicates an info
+</div>
   <h2>Resultados de Consulta</h2>
   <div class="table-responsive">
   <table class="table table-hover table-striped">
@@ -74,7 +86,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr class="rowsql">
         <td>1</td>
         <td>Anna</td>
         <td>Pitt</td>
@@ -82,7 +94,7 @@
         <td>New York</td>
         <td>USA</td>
       </tr>
-      <tr>
+      <tr class="rowsql">
         <td>1</td>
         <td>Anna</td>
         <td>Pitt</td>
@@ -90,7 +102,7 @@
         <td>New York</td>
         <td>USA</td>
       </tr>
-      <tr>
+      <tr class="rowsql">
         <td>1</td>
         <td>Anna</td>
         <td>Pitt</td>
@@ -98,7 +110,7 @@
         <td>New York</td>
         <td>USA</td>
       </tr>
-      <tr>
+      <tr class="rowsql">
         <td>1</td>
         <td>Anna</td>
         <td>Pitt</td>
@@ -110,6 +122,27 @@
   </table>
   </div>
 </div>
+  <!-- Modal para editar los registros -->
+  <div class="modal fade" id="editreg" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Editamos el registro seleccionado</h4>
+        </div>
+        <div class="modal-body">
+          <p>Formulario con registros</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
 <script>
 $(document).ready(function(){
 
@@ -125,6 +158,13 @@ $(document).ready(function(){
     });
     $("#innerjoin").click(function(){
 		$("#sqlarea").val("SELECT columna FROM tabla1 INNER JOIN tabla2 ON tabla1.columna=tabla2.columna;");
+    });
+	$('.closealert').click(function() {
+	   $(this).parent().hide();
+	})
+	//click en un registro, abrimos una ventana modal para editarlo
+    $(".rowsql").click(function(){ 
+		$("#editreg").modal();
     });
 });
 </script>
