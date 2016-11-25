@@ -5,14 +5,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bt/css/bootstrap.min.css"> 
+	<style>
+		.blink {
+		  animation: blinker 1s linear infinite;
+		} 
+		@keyframes blinker {  
+		  50% { opacity: 0; }
+		}
+	</style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+<div class="container" id="loading"> 
+  <div class="well well-lg blink">Cargando y procesando la información...</div>
+</div>
+<div class="container" id="dbrhtml" style="display:none">
 <div class="container">
-  <h1>My First Bootstrap Page</h1>
-  <p>This is some text.</p> 
+  <h1>DBR Mysql</h1>
+  <p>Gestor de Mysql bajo php/bootstrap/jquery </p> 
 	<div class="row">
 		<div class="col-sm-9">
 			<form>
@@ -56,9 +67,7 @@
 					<div class="btn-group">
 					  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 					  Tablas <span class="caret"></span></button>
-					  <ul class="dropdown-menu" role="menu">
-						<li><a href="#">Tablet</a></li>
-						<li><a href="#">Smartphone</a></li>
+					  <ul class="dropdown-menu" role="menu" id="tables"> 
 					  </ul>
 					</div> 
 				</div>
@@ -150,9 +159,16 @@
       
     </div>
   </div>
-  
+</div>
 <script>
 $(document).ready(function(){
+	//cerramos loading y abrimos el dbr
+	$("#loading").fadeOut();
+	$("#dbrhtml").fadeIn();
+	
+	
+	//añadimos las tablas al ul
+	addtables();
 
 	//clicks en consultas
     $("#select").click(function(){
@@ -175,6 +191,26 @@ $(document).ready(function(){
 		$("#editreg").modal();
     });
 });
+
+/* funcion para añadir las tablas al listado del menu*/
+function addtables()
+{
+	$( "ul#tables" ).html('');
+
+	$.post( "php/ajax.php", { gettables: true }, 
+	function(json)
+	{ 
+		console.log( "tablas = " + json.length); 
+	
+		$.each(json, function(i) {
+			$.each(json[i], function(k,v) {
+				console.log( k + " => " + v); 
+				$( "ul#tables" ).append('<li><a href="#">'+v+'</a></li>');
+			});
+		});
+		
+	}, 'json' );
+}
 </script>
 
 </body>

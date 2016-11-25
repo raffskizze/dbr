@@ -2,7 +2,7 @@
 
 /* Globales */
 
-define("USERBD","dbuser");
+define("USERBD","dbruser");
 define("NOMBREBD","dbr");
 define("USERPWD","1234");
 define("HOST","localhost");

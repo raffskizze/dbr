@@ -7,7 +7,7 @@ require_once("confdbr.php");
 /* Clase dbr mysqli */
 class Dbrclass 
 { 
-			/* identificador de conexión y consulta */
+			/* identificador de conexiÃ³n y consulta */
 			public $IDcon = 0;
 			
 			public $IDquery = 0;
@@ -18,7 +18,7 @@ class Dbrclass
 			
 			public $Treg = 0;
 			
-			/* número de error - texto error - consulta SQL */
+			/* nÃºmero de error - texto error - consulta SQL */
 			
 			public $Errnum = 0;
 			
@@ -26,8 +26,8 @@ class Dbrclass
 			
 			public $SQL = ""; 
 			
-	/* Método Constructor: Cada vez que creemos una variable			
-	de esta clase, se ejecutará esta función */			
+	/* MÃ©todo Constructor: Cada vez que creemos una variable			
+	de esta clase, se ejecutarÃ¡ esta funciÃ³n */			
 	function __construct()
 	{			 
 				$this->BaseDatos = NOMBREBD;
@@ -38,16 +38,16 @@ class Dbrclass
 				
 				$this->Clave = USERPWD; 
 			
-			$this->conectar();
+			$this->con();
 	}
 	
-	/* Método destructor: */
+	/* MÃ©todo destructor: */
 	function __destruct()
 	{
 			$this->Con->close();
 	}
-	/*Conexión a la base de datos*/			
-	function conectar()
+	/*ConexiÃ³n a la base de datos*/			
+	function con()
 	{			 
 			/* conexion objeto de mysqli */
 			$this->Con = new \mysqli($this->Servidor, $this->Usuario, $this->Clave, $this->BaseDatos); 
@@ -60,18 +60,17 @@ class Dbrclass
 				return 0; 
 			}
 			  
-			/* Si hemos tenido éxito conectando devuelve 
-			el identificador de la conexión, sino devuelve 0 */
+			/* Si hemos tenido Ã©xito conectando devuelve 
+			el identificador de la conexiÃ³n, sino devuelve 0 */
 			return $this->IDcon = $this->Con->thread_id;
 	}
 	
 	/* Ejecuta un consulta y devuelve TRUE si ha tenido exito o el numero de files devueltas y 0 FALSE si ocurrio un error */			
-	function ejecutasql($sql)
+	function sqlquery($sql)
 	{
 		$time_start = microtime(true);
-		
-		if(LOGS)
-		$this->iniciaprofiles();
+		 
+		$this->initprofiles();
 		
 		if ($sql == "") 
 			{			
@@ -88,9 +87,8 @@ class Dbrclass
 				$this->Errnum = $this->Con->errno;
 				return FALSE;
 			}
-		
-		if(LOGS)
-		$this->sacayresetprofiles(); 
+		 
+		$this->getprofiles(); 
 		
 			$time_end = microtime(true);
 			$this->Querytime = $time_end - $time_start; 
@@ -109,29 +107,20 @@ class Dbrclass
 			}
 	}
 	
-	/* Devuelve el número de campos de una consulta */
-	function numcampos() 
+	/* Devuelve el nÃºmero de campos de una consulta */
+	function numcamp() 
 	{
 			return $this->Result->field_count;
 	} 
 	
-	/* Devuelve el número de registros de una consulta */
-	function numregistros()
+	/* Devuelve el nÃºmero de registros de una consulta */
+	function numreg()
 	{
 			return $this->Treg;
 	}
 	
-	/* Devuelve el nombre de un campo de una consulta */
-	function nombrecampo($numcampo) 
-	{			 
-			$numcampo--; //le restamos 1 por que empieza desde el indice 0
-			$info_campo = $this->Result->fetch_field_direct($numcampo); 
-
-			return $info_campo->name;
-	}
-	
 	/* Devuelve la consulta en un array */
-	function devuelvearray() 
+	function getarray() 
 	{			
 			if($r=@$this->Result->fetch_assoc())
 			{
@@ -142,11 +131,11 @@ class Dbrclass
 	}	
 	
 	/* Devuelve el array completo que genera una consulta*/
-	function devuelvearraycompleto() 
+	function getallarray() 
 	{			
 		$i = 0;
 		
-			while(@$valor = $this->Result->fetch_array() )
+			while(@$valor = $this->Result->fetch_array(MYSQL_ASSOC) )
 			{
 				$array[$i] = $valor;	
 				$i++;
@@ -156,57 +145,29 @@ class Dbrclass
 				return $array;
 			else
 				return 0;		
-	}
-		
-	/* Devuelve el array completo con los valores del campo especificado que ha devuelto la consulta*/
-	function devuelvecampocompleto($campo) 
-	{			
-		$i = 0;
-		
-			while(@$valor = $this->Result->fetch_array() )
-			{
-				$array[$i] = $valor["$campo"];	
-				$i++;
-			}
-			
-			if(isset($array))
-				return $array;
-			else
-				return 0;		
-	}
-	
-	/* Devuelve el valor de un campo especificado*/
-	function devuelvecampo($campo) 
-	{			
-			if(@$res = $this->Result->fetch_array())
-			{
-				return $res["$campo"]; 
-			}
-			else
-			return 0;
-	}
+	} 
 	
 	/* Devuelve la ultima id autoincrement insertada */
-	function devuelveid() 
+	function getid() 
 	{			
 			return 	$this->IDquery;			
 	}
 	
 	/* Cierra el resultado existente*/
-	function cerrarresultado() 
+	function closeresult() 
 	{		
 			$this->Result->free(); 
 	}
 	
 	/* funciones que establecen y cierran los profiles mysql para recoger el tiempo de la consulta */
-	function iniciaprofiles()
+	function initprofiles()
 	{
 		//creamos los perfiles
 		$this->Con->query('SET profiling_history_size=1;');
 		$this->Con->query('SET profiling=1'); 
 	}
 	
-	function sacayresetprofiles()
+	function getprofiles()
 	{
 		//sacamos el tiempo del perfil mysql
 		if ($res = $this->Con->query("SHOW profiles", MYSQLI_USE_RESULT)) {
