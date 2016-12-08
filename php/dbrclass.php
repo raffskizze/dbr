@@ -113,6 +113,18 @@ class Dbrclass
 			return $this->Result->field_count;
 	} 
 	
+	/* Devuelve la info de un campo */
+	function infofield($num) 
+	{
+			return $this->Result->fetch_field_direct($num);
+	}
+	
+	/* Devuelve la info de los campos */
+	function infofields() 
+	{
+			return $this->Result->fetch_fields();
+	}
+	
 	/* Devuelve el número de registros de una consulta */
 	function numreg()
 	{
@@ -138,6 +150,39 @@ class Dbrclass
 			while(@$valor = $this->Result->fetch_array(MYSQL_ASSOC) )
 			{
 				$array[$i] = $valor;	
+				$i++;
+			}
+			
+			if(isset($array))
+				return $array;
+			else
+				return 0;		
+	} 
+	
+	/* Devuelve el array completo que genera una consulta cortando los campos a maximo 255 caracteres*/
+	function getallarrayprev() 
+	{			
+		$i = 0;
+		
+			while(@$valor = $this->Result->fetch_array(MYSQL_ASSOC) )
+			{ 
+				$valorprev=array();
+				foreach ($valor as $clave => $dato) {
+					//si se le puede hacer el substr es un dato que se puede mostrar si no no
+					if(mb_check_encoding($dato,"UTF-8"))
+					{
+						if($dato = substr($dato, 0, 255))
+						$valorprev[]=[ $clave => $dato];  
+						elseif(is_numeric($dato)) 
+						$valorprev[]=[ $clave => $dato];
+						else
+						$valorprev[]=[ $clave => "[Dato no soportado o vacio]"];
+					}
+					else
+					$valorprev[]=[ $clave => "[Dato no soportado]"];
+				}
+				
+				$array[$i] = $valorprev;	
 				$i++;
 			}
 			
@@ -184,9 +229,6 @@ class Dbrclass
 	}
 	
 }
-
-
-
  
 /* PRUEBAS */
 
