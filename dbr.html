@@ -35,8 +35,8 @@
 		<div class="col-sm-3">
 			<form> 
 				<div class="form-group">
-					    <label for="sel1">Mostrar filas:</label>
-						  <select class="form-control" id="sel1">
+					    <label for="showrows">Show rows:</label>
+						  <select class="form-control" id="showrows">
 							<option>100</option>
 							<option>50</option> 
 							<option>10</option>
@@ -292,9 +292,14 @@ function showdata(json)
 		//añadimos el contenido data
 		$.each(json.data, function(i) {
 			
-			_row = wrapdata(json.data[i],json.editables);
+			if(i < $("#showrows").val() || $("#showrows").val() == "all")
+			{
+				_row = wrapdata(json.data[i],json.editables);
 			
-			$( "#datarows" ).append(_row);
+				$( "#datarows" ).append(_row);
+			}
+			else
+				return false;
 		});
 		
 		//sacamos el nombre de la tabla 
