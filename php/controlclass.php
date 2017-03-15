@@ -11,7 +11,7 @@ class Control
 	static function gettables()
 	{
 		$con = new Dbrclass;
-		$con->sqlquery("SHOW tables FROM ".NOMBREBD.";");
+		$con->sqlquery("SHOW tables FROM `".NOMBREBD."`;");
 		
 		$tables = $con->getallarray();
 		
